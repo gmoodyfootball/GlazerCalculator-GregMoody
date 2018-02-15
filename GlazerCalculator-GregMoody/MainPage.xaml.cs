@@ -26,5 +26,10 @@ namespace GlazerCalculator_GregMoody
         {
             this.InitializeComponent();
         }
+
+        private void textBlock_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
