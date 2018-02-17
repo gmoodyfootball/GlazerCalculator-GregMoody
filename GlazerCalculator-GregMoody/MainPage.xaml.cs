@@ -27,9 +27,11 @@ namespace GlazerCalculator_GregMoody
             this.InitializeComponent();
         }
 
+
+        //Visual studio made this function on accident, and it flips out if I try to delete it. So here it stays :)
         private void textBlock_SelectionChanged(object sender, RoutedEventArgs e)
         {
-
+            //Hi everyone! I'm an unused function!!
         }
 
         private void btnCalculate_Click(object sender, RoutedEventArgs e)
@@ -43,8 +45,8 @@ namespace GlazerCalculator_GregMoody
                 width = double.Parse(widthString);
             } catch
             {
+                //This should never be called, unless they didn't enter a value to begin with
                 width = 0;
-                speakToMe("You didn't enter a correct width. What are you, conscious of your fat?");
             }
             heightString = heightTextBox.Text;
             try
@@ -53,22 +55,39 @@ namespace GlazerCalculator_GregMoody
             }
             catch
             {
+                //This should never be called, unless they didn't enter a value in begin with
                 height = 0;
-                if (width != 0)
-                {
-                    speakToMe("You didn't enter a correct height. What are you, a midget?");
-                }
             }
             woodLength = 2 * (width + height) * 3.25;
             glassArea = 2 * (width * height);
 
-            // Console.WriteLine("The length of the wood is " +
-            // woodLength + " feet");
-            // Console.WriteLine("The area of the glass is " +
-            // glassArea + " square metres")
-            
+            DateTime dateOrdered = DateTime.Now;
+
+            DisplayTotalsDialog(width, height, glassArea, woodLength, dateOrdered);
+            speakToMe("Here are your totals. Aren't they nice?");
 
         }
+
+        //This will pop up a dialog to show the user's output
+        private async void DisplayTotalsDialog(double width, double height, double glassArea, double woodLength, DateTime dateOrdered)
+        {
+            ContentDialog displayTotalsDialog = new ContentDialog
+            {
+                Title = "Your Totals",
+                Content = "Width: " + width + "\n"
+                + "Height: " + height + "\n"
+                + "Glass Area: " + glassArea + "\n"
+                + "Wood Length: " + woodLength + "\n"
+                + "Date Ordered: " + dateOrdered,
+                CloseButtonText = "Neat!"
+            };
+
+            ContentDialogResult result = await displayTotalsDialog.ShowAsync();
+        }
+
+
+        //This is just for fun to let the program make sassy remarks to the user
+        //This is from the "Hello World" example on Microsoft's website. I just modified it to accept a string input
         private async void speakToMe(string creepyVoice)
         {
             MediaElement mediaElement = new MediaElement();
@@ -77,9 +96,47 @@ namespace GlazerCalculator_GregMoody
             mediaElement.SetSource(stream, stream.ContentType);
             mediaElement.Play();
         }
+
+        //Just to update the quantity label
         private void quantitySlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             quantityLabel.Text = quantitySlider.Value.ToString();
+        }
+
+        private void widthTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //Check each of the characters in the string in the text box, and make sure that they are all numbers
+            //If it's not, delete it, and tell them why
+            string tString = widthTextBox.Text;
+            if (tString.Trim() == "") return;
+            for (int i = 0; i < tString.Length; i++)
+            {
+                if (!char.IsNumber(tString[i]))
+                {
+                    speakToMe("Please enter a valid number for the width");
+                    widthTextBox.Text = "";
+                    return;
+                }
+
+            }
+        }
+
+        private void heightTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //Check each of the characters in the string in the text box, and make sure that they are all numbers
+            //If it's not, delete it, and tell them why
+            string tString = heightTextBox.Text;
+            if (tString.Trim() == "") return;
+            for (int i = 0; i < tString.Length; i++)
+            {
+                if (!char.IsNumber(tString[i]))
+                {
+                    speakToMe("Please enter a valid number for the height");
+                    heightTextBox.Text = "";
+                    return;
+                }
+
+            }
         }
     }
 }
