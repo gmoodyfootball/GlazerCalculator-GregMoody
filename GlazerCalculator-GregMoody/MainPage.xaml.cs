@@ -31,5 +31,55 @@ namespace GlazerCalculator_GregMoody
         {
 
         }
+
+        private void btnCalculate_Click(object sender, RoutedEventArgs e)
+        {
+            
+            double width, height, woodLength, glassArea;
+            string widthString, heightString;
+            widthString = widthTextBox.Text;
+            try
+            {
+                width = double.Parse(widthString);
+            } catch
+            {
+                width = 0;
+                speakToMe("You didn't enter a correct width. What are you, conscious of your fat?");
+            }
+            heightString = heightTextBox.Text;
+            try
+            {
+                height = double.Parse(heightString);
+            }
+            catch
+            {
+                height = 0;
+                if (width != 0)
+                {
+                    speakToMe("You didn't enter a correct height. What are you, a midget?");
+                }
+            }
+            woodLength = 2 * (width + height) * 3.25;
+            glassArea = 2 * (width * height);
+
+            // Console.WriteLine("The length of the wood is " +
+            // woodLength + " feet");
+            // Console.WriteLine("The area of the glass is " +
+            // glassArea + " square metres")
+            
+
+        }
+        private async void speakToMe(string creepyVoice)
+        {
+            MediaElement mediaElement = new MediaElement();
+            var synth = new Windows.Media.SpeechSynthesis.SpeechSynthesizer();
+            Windows.Media.SpeechSynthesis.SpeechSynthesisStream stream = await synth.SynthesizeTextToStreamAsync(creepyVoice);
+            mediaElement.SetSource(stream, stream.ContentType);
+            mediaElement.Play();
+        }
+        private void quantitySlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            quantityLabel.Text = quantitySlider.Value.ToString();
+        }
     }
 }
