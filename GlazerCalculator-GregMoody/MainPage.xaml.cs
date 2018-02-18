@@ -46,6 +46,7 @@ namespace GlazerCalculator_GregMoody
             } catch
             {
                 //This should never be called, unless they didn't enter a value to begin with
+                widthTextBox.Text = "0";
                 width = 0;
             }
             heightString = heightTextBox.Text;
@@ -56,6 +57,7 @@ namespace GlazerCalculator_GregMoody
             catch
             {
                 //This should never be called, unless they didn't enter a value in begin with
+                heightTextBox.Text = "0";
                 height = 0;
             }
             woodLength = 2 * (width + height) * 3.25;
@@ -64,7 +66,15 @@ namespace GlazerCalculator_GregMoody
             DateTime dateOrdered = DateTime.Now;
 
             DisplayTotalsDialog(width, height, glassArea, woodLength, dateOrdered);
-            speakToMe("Here are your totals. Aren't they nice?");
+
+            if (width ==0 || height == 0)
+            {
+                speakToMe("Well, this isn't going to make a nice Window. You didn't specify width or height! So, I'm going to assume you didn't really want a window");
+            }
+            else
+            {
+                speakToMe("Here are your totals. Aren't they nice?");
+            }
 
         }
 
@@ -113,7 +123,7 @@ namespace GlazerCalculator_GregMoody
             {
                 if (!char.IsNumber(tString[i]))
                 {
-                    speakToMe("Please enter a valid number for the width");
+                    speakToMe("Please enter a valid number for the width. It's not that hard, I promise");
                     widthTextBox.Text = "";
                     return;
                 }
